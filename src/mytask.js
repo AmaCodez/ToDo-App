@@ -1,7 +1,7 @@
 const allTask = () => {
     const inputTask = document.querySelector('.input-task');
 const addBtn = document.querySelector('.addBtn');
-const taskContainer = document.querySelector('#task-container');
+const taskContainer = document.querySelector('.task-container');
 
     function taskValue () {
     const task = inputTask.value;
