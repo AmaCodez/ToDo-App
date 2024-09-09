@@ -11,7 +11,24 @@
         <div id ="task-container"></div>
         <dialog>
             <form action="" method="get" class="form">
-
+                <input type="text" name="usersTaskName" placeholder="Write a task name" class="form-content task-name">
+                <div class="form-content">
+                    <label for="dueDate">Due date</label>
+                    <button class="dateBtn">calendar</button>
+                </div>
+                <div class="form-content">
+                    <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                        <option value="none">None</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <div class="form-content">
+                    <label for="description"></label>
+                    <textarea name="description" id="description" placeholder="What is this task about?"></textarea>
+                </div>
             </form>
         </dialog>
      </main>
