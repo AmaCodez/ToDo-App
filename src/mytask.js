@@ -1,7 +1,7 @@
 const allTask = () => {
     const myTask = [];
 
-    class Task {
+    class TaskList {
         constructor (name, date, priority, note) {
             this.name = name;
             this.date = date;
