@@ -1,7 +1,10 @@
 const allTask = () => {
+    const main = ocument.querySelector('#content');
     const taskContainer = document.querySelector('#task-container');
+    const newTask = document.querySelector('.newTask');
+    const cancel = document.querySelector('.cancel');
 
-
+    main.classList.add('mytask');
     const myTask = [];
 
     class TaskList {
@@ -70,7 +73,26 @@ const allTask = () => {
 
         };
     };
- 
+ // create a button to open dialogue (card)
+
+ cancel.addEventListener('click', (event) => {
+    event.preventDefault();
+    dialog.close();
+ });
+
+ //when you press the add button on the form it pushes to the task container
+ newTask.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const taskFormName = document.querySelector('#taskName').value;
+    const taskFormDate = document.querySelector('#dateBtn').value;
+    const taskFormPriority = document.querySelector('#priority').value;
+    const taskFormDescription = document.querySelector('#description').checked;
+
+addBookToLibrary(bookName, bookAuthor, bookPages, bookRead);
+form.reset();
+dialog.close();
+});
 };
 
 export default allTask;
