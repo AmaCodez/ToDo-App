@@ -54,8 +54,15 @@ const allTask = () => {
             taskControl.classList.add('task-control');
             const taskEdit = document.createElement('button');
             taskEdit.classList.add('editBtn');
+            taskEdit.addEventListener('click', () => {
+                dialog.showModal(); // but it needs to open that card with the details inside.
+            });
+
             const taskDelete = document.createElement('button');
             taskDelete.classList.add('deleteBtn'); //don't forget to add image 
+            //create an event listener that removes the tasklist from the task container
+            // once this is successful, create a are you sure? form before it deletes competly 
+            
 
             taskName.appendChild(taskNameInput);
 
@@ -80,7 +87,6 @@ const allTask = () => {
     dialog.close();
  });
 
- //when you press the add button on the form it pushes to the task container
  newTask.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -89,7 +95,7 @@ const allTask = () => {
     const taskFormPriority = document.querySelector('#priority').value;
     const taskFormDescription = document.querySelector('#description').checked;
 
-addBookToLibrary(bookName, bookAuthor, bookPages, bookRead);
+addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
 form.reset();
 dialog.close();
 });
