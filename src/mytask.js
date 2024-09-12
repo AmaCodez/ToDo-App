@@ -1,3 +1,6 @@
+import editImg from '../asset/pencil.png';
+import deleteImg from '../asset/delete.png';
+
 const allTask = () => {
     const main = ocument.querySelector('#content');
     const taskContainer = document.querySelector('#task-container');
@@ -58,17 +61,31 @@ const allTask = () => {
                 dialog.showModal(); // but it needs to open that card with the details inside.
             });
 
+            const editBtn = document.createElement('image');
+            editBtn.classList.add('edit-button');
+            editBtn.src = editImg;
+            editBtn.alt = 'edit icon';
+
             const taskDelete = document.createElement('button');
             taskDelete.classList.add('deleteBtn'); //don't forget to add image 
-            //create an event listener that removes the tasklist from the task container
             // once this is successful, create a are you sure? form before it deletes competly 
-            
+            taskDelete.addEventListener('click', () => {
+                taskContainer.removeChild(taskList);  
+            });
+
+            const deleteBtn = document.createElement('image');
+            deleteBtn.classList.add('edit-button');
+            deleteBtn.src = deleteImg;
+            deleteBtn.alt = 'delete icon';
 
             taskName.appendChild(taskNameInput);
 
             taskItems.appendChild(taskName);
             taskItems.appendChild(taskDescription);
             taskItems.appendChild(taskDate);
+
+            taskEdit.appendChild(editBtn);
+            taskDelete.appendChild(deleteBtn);
 
             taskControl.appendChild(taskEdit);
             taskControl.appendChild(taskDelete);
