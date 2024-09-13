@@ -2,12 +2,13 @@ import editImg from '../asset/pencil.png';
 import deleteImg from '../asset/delete.png';
 
 const allTask = () => {
-    const main = ocument.querySelector('#content');
+    const main = document.querySelector('#content');
     const taskContainer = document.querySelector('#task-container');
     const newTask = document.querySelector('.newTask');
     const cancel = document.querySelector('.cancel');
 
     main.classList.add('mytask');
+
     const myTask = [];
 
     class TaskList {
@@ -39,7 +40,7 @@ const allTask = () => {
             taskName.id = 'task-name';
             taskName.textContent = myTask[i].name;
             const taskNameInput = document.createElement('input');
-            taskNameInput.type = 'checkbox'; //will be appended to taskName
+            taskNameInput.type = 'checkbox'; 
             taskNameInput.name = 'userListName';
 
             const taskDescription = document.createElement('p');
@@ -51,7 +52,7 @@ const allTask = () => {
             taskDate.textContent = myTask[i].date;
 
             // don't forget to add priority !, depending on the 
-            //priority level
+            //priority level (add if statement to select)
 
             const taskControl = document.createElement('div');
             taskControl.classList.add('task-control');

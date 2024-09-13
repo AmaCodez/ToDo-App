@@ -6,7 +6,22 @@
     <title>ToDo List</title>
 </head>
 <body>
-    <!-- header (you'll create the side menu here) -->
+    <header>
+        <nav>
+            <button class="tab addTaskBtn"><svg></svg> Add task</button>
+            <button class="tab"><svg></svg> My tasks</button>
+            <button class="tab"><svg></svg> Today</button>
+            <button class="tab"><svg></svg> Upcoming </button>
+            <button class="tab"><svg></svg> Completed</button>
+        </nav>
+        <div class="projects-container">
+            <div class="projects">
+                <p class="projects-title">Projects</p>
+                <button class="projectsBtn"><svg></svg> Add</button>
+            </div>
+            <div class="project-content"></div>
+        </div>
+    </header>
      <main id="content"> <!--Tab switch, where task will be displayed-->
         <div id ="task-container"></div> 
         <dialog>
