@@ -4,8 +4,12 @@ import deleteImg from '../asset/delete.png';
 const allTask = () => {
     const main = document.querySelector('#content');
     const taskContainer = document.querySelector('#task-container');
-    const newTask = document.querySelector('.newTask');
+    const newTaskBtn = document.querySelector('.newTask');
     const cancel = document.querySelector('.cancel');
+    const createTaskBtn = document.querySelector('.addTaskBtn');
+    const dialog = document.querySelector('dialog');
+    const form = document.querySelector('form');
+    const prioritySelect = document.querySelector('#priority');
 
     main.classList.add('mytask');
 
@@ -20,13 +24,13 @@ const allTask = () => {
         }
     };
 
-    function addTask (name, date, priority, note){ //create a new object and push in myTask array
+    function addTask (name, date, priority, note){ 
         const newTask = new TaskList (name, date, priority, note); 
         myTask.push(newTask);
         displayTask();
     };
-
-    function displayTask (){ //this is how the task will display on the browser when filled
+   
+    const displayTask = (function (){
         for(let i = 0; i < myTask.length; i++) {
             taskContainer.innerHTML = null;
 
@@ -51,9 +55,6 @@ const allTask = () => {
             taskDate.classList.add('task-date');
             taskDate.textContent = myTask[i].date;
 
-            // don't forget to add priority !, depending on the 
-            //priority level (add if statement to select)
-
             const taskControl = document.createElement('div');
             taskControl.classList.add('task-control');
             const taskEdit = document.createElement('button');
@@ -69,7 +70,7 @@ const allTask = () => {
 
             const taskDelete = document.createElement('button');
             taskDelete.classList.add('deleteBtn'); //don't forget to add image 
-            // once this is successful, create a are you sure? form before it deletes competly 
+            // create an 'are you sure?' form before it deletes competly 
             taskDelete.addEventListener('click', () => {
                 taskContainer.removeChild(taskList);  
             });
@@ -97,26 +98,33 @@ const allTask = () => {
             taskContainer.appendChild(taskList);  
 
         };
-    };
- // create a button to open dialogue (card)
+    }) ();
 
- cancel.addEventListener('click', (event) => {
-    event.preventDefault();
+// include an IIFE
+ const taskBtns = ( function () {
+    createTaskBtn.addEventListener('click', () => {
+        dialog.showModal();
+     });
+    
+     cancel.addEventListener('click', (event) => {
+        event.preventDefault();
+        dialog.close();
+     });
+    
+     newTaskBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+    
+        const taskFormName = document.querySelector('#taskName').value;
+        const taskFormDate = document.querySelector('#dateBtn').value;
+        const taskFormPriority = document.querySelector('#priority').value;
+        const taskFormDescription = document.querySelector('#description').value;
+    
+    addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+    form.reset();
     dialog.close();
- });
+    });
+})();
 
- newTask.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const taskFormName = document.querySelector('#taskName').value;
-    const taskFormDate = document.querySelector('#dateBtn').value;
-    const taskFormPriority = document.querySelector('#priority').value;
-    const taskFormDescription = document.querySelector('#description').checked;
-
-addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
-form.reset();
-dialog.close();
-});
-};
+}
 
 export default allTask;
