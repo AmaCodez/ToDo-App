@@ -119,8 +119,6 @@ const allTask = () => {
         };
     };
 
-// include an IIFE
-
     createTaskBtn.addEventListener('click', () => {
         dialog.showModal();
      });
