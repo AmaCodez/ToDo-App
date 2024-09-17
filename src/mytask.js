@@ -9,7 +9,6 @@ const allTask = () => {
     const createTaskBtn = document.querySelector('.addTaskBtn');
     const dialog = document.querySelector('dialog');
     const form = document.querySelector('form');
-    const prioritySelect = document.querySelector('#priority');
 
     main.classList.add('mytask');
 
@@ -30,9 +29,9 @@ const allTask = () => {
         displayTask();
     };
    
-    const displayTask = (function (){
+     function displayTask (){
+        taskContainer.innerHTML = null;
         for(let i = 0; i < myTask.length; i++) {
-            taskContainer.innerHTML = null;
 
             const taskList = document.createElement('div');
             taskList.classList.add('task-list');
@@ -42,7 +41,7 @@ const allTask = () => {
 
             const taskName = document.createElement('label');
             taskName.id = 'task-name';
-            taskName.textContent = myTask[i].name;
+            taskName.textContent = `${exclamation} ${myTask[i].name}`;
             const taskNameInput = document.createElement('input');
             taskNameInput.type = 'checkbox'; 
             taskNameInput.name = 'userListName';
@@ -55,27 +54,47 @@ const allTask = () => {
             taskDate.classList.add('task-date');
             taskDate.textContent = myTask[i].date;
 
+            const priority = myTask[i].priority;
+            let exclamation = '';
+        
+            if (priority === 'high') {
+                    exclamation = '!!!';
+             } else if (priority === 'medium') {
+                    exclamation = '!!';
+            } else if (priority === 'low') {
+                    exclamation = '!';
+            }
+
             const taskControl = document.createElement('div');
             taskControl.classList.add('task-control');
             const taskEdit = document.createElement('button');
             taskEdit.classList.add('editBtn');
             taskEdit.addEventListener('click', () => {
-                dialog.showModal(); // but it needs to open that card with the details inside.
+                const taskToEdit = myTask[i];
+
+                // Pre-fill the form fields with the selected task's data
+                document.querySelector('#taskName').value = taskToEdit.name;
+                document.querySelector('#dateBtn').value = taskToEdit.date; // Adjust this to use a proper date input
+                document.querySelector('#priority').value = taskToEdit.priority;
+                document.querySelector('#description').value = taskToEdit.note;
+            
+                dialog.showModal();
             });
 
-            const editBtn = document.createElement('image');
+            const editBtn = document.createElement('img');
             editBtn.classList.add('edit-button');
             editBtn.src = editImg;
             editBtn.alt = 'edit icon';
 
             const taskDelete = document.createElement('button');
-            taskDelete.classList.add('deleteBtn'); //don't forget to add image 
+            taskDelete.classList.add('deleteBtn'); 
             // create an 'are you sure?' form before it deletes competly 
             taskDelete.addEventListener('click', () => {
-                taskContainer.removeChild(taskList);  
+                myTask.splice(i, 1);
+                displayTask(); //Refresh the task list display
             });
 
-            const deleteBtn = document.createElement('image');
+            const deleteBtn = document.createElement('img');
             deleteBtn.classList.add('edit-button');
             deleteBtn.src = deleteImg;
             deleteBtn.alt = 'delete icon';
@@ -95,13 +114,13 @@ const allTask = () => {
             taskList.appendChild(taskItems);
             taskList.appendChild(taskControl);
 
-            taskContainer.appendChild(taskList);  
+            taskContainer.appendChild(taskList); 
 
         };
-    }) ();
+    };
 
 // include an IIFE
- const taskBtns = ( function () {
+
     createTaskBtn.addEventListener('click', () => {
         dialog.showModal();
      });
@@ -123,8 +142,6 @@ const allTask = () => {
     form.reset();
     dialog.close();
     });
-})();
-
 }
 
 export default allTask;
