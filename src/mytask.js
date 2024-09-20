@@ -15,11 +15,12 @@ const allTask = () => {
     const myTask = [];
 
     class TaskList {
-        constructor (name, date, priority, note) {
+        constructor (name, date, priority, note, completed = false) {
             this.name = name;
             this.date = date;
             this.priority = priority;
             this.note = note;
+            this.completed = completed;
         }
     };
 
@@ -29,9 +30,9 @@ const allTask = () => {
         displayTask();
     };
    
-     function displayTask (){
-        taskContainer.innerHTML = null;
-        for(let i = 0; i < myTask.length; i++) {
+     function displayTask (taskArray = myTask){
+        taskContainer.innerHTML = '';
+        for(let i = 0; i < taskArray.length; i++) {
 
             const taskList = document.createElement('div');
             taskList.classList.add('task-list');
@@ -39,22 +40,7 @@ const allTask = () => {
             const taskItems = document.createElement('div');
             taskItems.classList.add('task-items');
 
-            const taskName = document.createElement('label');
-            taskName.id = 'task-name';
-            taskName.textContent = `${exclamation} ${myTask[i].name}`;
-            const taskNameInput = document.createElement('input');
-            taskNameInput.type = 'checkbox'; 
-            taskNameInput.name = 'userListName';
-
-            const taskDescription = document.createElement('p');
-            taskDescription.classList.add('task-description');
-            taskDescription.textContent = myTask[i].note;
-
-            const taskDate = document.createElement('div');
-            taskDate.classList.add('task-date');
-            taskDate.textContent = myTask[i].date;
-
-            const priority = myTask[i].priority;
+            const priority = taskArray[i].priority;
             let exclamation = '';
         
             if (priority === 'high') {
@@ -65,12 +51,32 @@ const allTask = () => {
                     exclamation = '!';
             }
 
+            const taskName = document.createElement('label');
+            taskName.id = 'task-name';
+            taskName.textContent = `${exclamation} ${taskArray[i].name}`;
+            const taskNameInput = document.createElement('input');
+            taskNameInput.type = 'checkbox'; 
+            taskNameInput.name = 'userListName';
+            taskNameInput.checked = taskArray[i].completed;
+            taskNameInput.addEventListener ('change', () => {
+                taskArray[i].completed = taskNameInput.checked; // Update the completed status based on checkbox
+                displayTask();
+            });
+
+            const taskDescription = document.createElement('p');
+            taskDescription.classList.add('task-description');
+            taskDescription.textContent = taskArray[i].note;
+
+            const taskDate = document.createElement('div');
+            taskDate.classList.add('task-date');
+            taskDate.textContent = taskArray[i].date;
+
             const taskControl = document.createElement('div');
             taskControl.classList.add('task-control');
             const taskEdit = document.createElement('button');
             taskEdit.classList.add('editBtn');
             taskEdit.addEventListener('click', () => {
-                const taskToEdit = myTask[i];
+                const taskToEdit = taskArray[i];
 
                 // Pre-fill the form fields with the selected task's data
                 document.querySelector('#taskName').value = taskToEdit.name;
@@ -119,6 +125,8 @@ const allTask = () => {
         };
     };
 
+function setupEventListeners () {
+
     createTaskBtn.addEventListener('click', () => {
         dialog.showModal();
      });
@@ -140,6 +148,11 @@ const allTask = () => {
     form.reset();
     dialog.close();
     });
+
+}
+
+setupEventListeners ();
+
 }
 
 export default allTask;
