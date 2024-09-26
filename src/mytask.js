@@ -1,4 +1,4 @@
-import taskStore from '.taskStore';
+import taskStore from './taskStore';
 import { renderTaskList } from './utils';
 
 const allTask = () => {
@@ -11,6 +11,9 @@ const allTask = () => {
 
     main.classList.add('mytask');
 
+    let isEditing = false; 
+    let editIndex = null;
+
     class TaskList {
         constructor (name, date, priority, note, completed = false) {
             this.name = name;
@@ -22,8 +25,18 @@ const allTask = () => {
     };
 
     function addTask (name, date, priority, note){ 
-        const newTask = new TaskList (name, date, priority, note); 
-        taskStore.tasks.push(newTask);
+        if (isEditing) {
+            // Update the existing task
+            taskStore.tasks[editIndex].name = name;
+            taskStore.tasks[editIndex].date = date;
+            taskStore.tasks[editIndex].priority = priority;
+            taskStore.tasks[editIndex].note = note;
+            isEditing = false; // Reset the edit mode
+            editIndex = null;
+        } else {
+            const newTask = new TaskList (name, date, priority, note); 
+            taskStore.tasks.push(newTask);
+        }
        renderTaskList(taskStore.tasks);
     };
 
@@ -42,7 +55,7 @@ function setupEventListeners () {
         e.preventDefault();
     
         const taskFormName = document.querySelector('#taskName').value;
-        const taskFormDate = document.querySelector('#dateBtn').value;
+        const taskFormDate = document.querySelector('#dueDate').value;
         const taskFormPriority = document.querySelector('#priority').value;
         const taskFormDescription = document.querySelector('#description').value;
     
@@ -56,6 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     setupEventListeners ();
 });
+
+// Function to open the edit dialog with the selected task's data
+window.editTask = (task, index) => {
+    isEditing = true;
+    editIndex = index;
+
+    document.querySelector('#taskName').value = task.name;
+    document.querySelector('#dueDate').value = task.date;
+    document.querySelector('#priority').value = task.priority;
+    document.querySelector('#description').value = task.note;
+
+    dialog.showModal();
+};
 
 }
 

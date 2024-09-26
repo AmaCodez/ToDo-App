@@ -26,7 +26,7 @@ export function renderTaskList(taskArray) {
 
             const taskName = document.createElement('label');
             taskName.id = 'task-name';
-            taskName.textContent = `${exclamation} ${taskArray[i].name}`;
+            taskName.textContent = `${exclamation} ${task.name}`;
 
             const taskNameInput = document.createElement('input');
             taskNameInput.type = 'checkbox'; 
@@ -52,16 +52,7 @@ export function renderTaskList(taskArray) {
             const taskEdit = document.createElement('button');
             taskEdit.classList.add('editBtn');
             taskEdit.addEventListener('click', () => {
-                const taskToEdit = task;
-
-                // Pre-fill the form fields with the selected task's data
-                document.querySelector('#taskName').value = taskToEdit.name;
-                document.querySelector('#dateBtn').value = taskToEdit.date; // Adjust this to use a proper date input
-                document.querySelector('#priority').value = taskToEdit.priority;
-                document.querySelector('#description').value = taskToEdit.note;
-            
-                const dialog = document.querySelector('dialog');
-                dialog.showModal();
+                window.editTask(task, index);   
             });
 
             const editBtn = document.createElement('img');
