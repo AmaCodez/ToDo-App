@@ -3,7 +3,10 @@ import deleteImg from '../asset/delete.png';
 
 export function renderTaskList(taskArray) {
     const taskContainer = document.querySelector('#task-container');
-    taskContainer.innerHTML = ''; 
+    // taskContainer.innerHTML = ''; 
+
+    if (taskContainer) {
+        taskContainer.innerHTML = ''; 
 
         taskArray.forEach((task, index) => {
 
@@ -91,4 +94,7 @@ export function renderTaskList(taskArray) {
             taskContainer.appendChild(taskList); 
 
         });
+    } else {
+        console.error("Task container not found! Check your HTML structure.");
+    }
 }

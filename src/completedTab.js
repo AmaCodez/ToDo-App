@@ -7,6 +7,13 @@ const completed = () => {
     main.className = '';
     main.classList.add('completed-tab');
 
+    let taskContainer = document.querySelector('#task-container');
+    if (!taskContainer) {
+        taskContainer = document.createElement('div');
+        taskContainer.id = 'task-container';
+        main.appendChild(taskContainer);
+    }
+
     const completedTasks = taskStore.tasks.filter(task => task.completed === true);
     renderTaskList(completedTasks);
 };

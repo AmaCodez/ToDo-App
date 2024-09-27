@@ -6,7 +6,15 @@ const today = () => {
     main.className = '';
     main.classList.add( 'today-tab');
 
-    const todayTasks = taskStore.tasks.filter(task => task.date === !currentDate);
+    let taskContainer = document.querySelector('#task-container');
+    if (!taskContainer) {
+        taskContainer = document.createElement('div');
+        taskContainer.id = 'task-container';
+        main.appendChild(taskContainer);
+    }
+
+    const currentDate = new Date().toISOString().split('T')[0];
+    const todayTasks = taskStore.tasks.filter(task => task.date === currentDate);
     renderTaskList(todayTasks);
 };
 
