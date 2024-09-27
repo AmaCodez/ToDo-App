@@ -1,5 +1,5 @@
 import "./styles.css";
-// import allTask from "./mytask";
+import allTask from "./mytask";
 import completed from "./completedTab";
-// allTask();
+allTask();
 completed();

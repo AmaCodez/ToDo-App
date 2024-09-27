@@ -6,7 +6,7 @@ const today = () => {
     main.className = '';
     main.classList.add( 'today-tab');
 
-    const todayTasks = taskStore.tasks.filter(task => task.completed === true);
+    const todayTasks = taskStore.tasks.filter(task => task.date === !currentDate);
     renderTaskList(todayTasks);
 };
 
