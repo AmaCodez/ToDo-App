@@ -24,32 +24,32 @@
     </header>
      <main id="content"> <!--Tab switch, where task will be displayed-->
         <div id ="task-container"></div> 
-        <dialog>
-            <form action="" method="get" class="form">
-                <input type="text" name="usersTaskName" placeholder="Write a task name" class="form-content" id="taskName">
-                <div class="form-content">
-                    <label for="dueDate">Due date</label>
-                    <button id="dueDate">calendar</button>
-                </div>
-                <div class="form-content">
-                    <label for="priority">Priority</label>
-                    <select name="priority" id="priority">
-                        <option value="none">None</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                    </select>
-                </div>
-                <div class="form-content">
-                    <label for="description"></label>
-                    <textarea name="description" id="description" placeholder="What is this task about?"></textarea>
-                </div>
-                <div class='form-buttons'>
-                    <button class="newTask">Add</button>
-                    <button class="cancel" formmethod="dialog">Cancel</button>
-              </div>
-            </form>
-        </dialog>
      </main>
+     <dialog>
+        <form action="" method="get" class="form">
+            <input type="text" name="usersTaskName" placeholder="Write a task name" class="form-content" id="taskName">
+            <div class="form-content">
+                <label for="dueDate">Due date</label>
+                <button id="dueDate">calendar</button>
+            </div>
+            <div class="form-content">
+                <label for="priority">Priority</label>
+                <select name="priority" id="priority">
+                    <option value="none">None</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+            <div class="form-content">
+                <label for="description"></label>
+                <textarea name="description" id="description" placeholder="What is this task about?"></textarea>
+            </div>
+            <div class='form-buttons'>
+                <button class="newTask">Add</button>
+                <button class="cancel" formmethod="dialog">Cancel</button>
+          </div>
+        </form>
+    </dialog>
 </body>
 </html>
