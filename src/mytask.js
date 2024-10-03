@@ -36,23 +36,20 @@ const allTask = () => {
         } else {
             const newTask = new TaskList (name, date, priority, note); 
             taskStore.tasks.push(newTask);
+            console.log("Task added:", taskStore.tasks);
         }
        renderTaskList(taskStore.tasks);
     };
 
 function setupEventListeners () {
 
-    createTaskBtn.addEventListener('click', () => {
-        dialog.showModal();
-     });
-    
-     cancel.addEventListener('click', (event) => {
-        event.preventDefault();
-        dialog.close();
-     });
+    // createTaskBtn.addEventListener('click', () => {
+    //     dialog.showModal();
+    //  });
     
      newTaskBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        console.log('Add button clicked');
     
         const taskFormName = document.querySelector('#taskName').value;
         const taskFormDate = document.querySelector('#dueDate').value;
@@ -60,9 +57,15 @@ function setupEventListeners () {
         const taskFormDescription = document.querySelector('#description').value;
     
     addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+
     form.reset();
     dialog.close();
     });
+
+    cancel.addEventListener('click', (event) => {
+        event.preventDefault();
+        dialog.close();
+     });
 
 }
 document.addEventListener('DOMContentLoaded', () => {

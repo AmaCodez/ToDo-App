@@ -17,18 +17,18 @@ export function removeAllContent() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const addTaskButton = document.querySelector('.addTaskBtn');
-    const dialog = document.querySelector('dialog');
+// document.addEventListener("DOMContentLoaded", () => {
+//     const addTaskButton = document.querySelector('.addTaskBtn');
+//     const dialog = document.querySelector('dialog');
 
-    if (addTaskButton && dialog) {
-        addTaskButton.addEventListener('click', () => {
-            dialog.showModal();
-        });
-    } else {
-        console.error("Add Task button or dialog not found.");
-    }
-});
+//     if (addTaskButton && dialog) {
+//         addTaskButton.addEventListener('click', () => {
+//             dialog.showModal();
+//         });
+//     } else {
+//         console.error("Add Task button or dialog not found.");
+//     }
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
     // Load default tab
