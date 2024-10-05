@@ -38,7 +38,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const todayTaskTab = document.querySelector("#todayTask");
     const completedTaskTab = document.querySelector("#completedTask");
 
-    // Check if the elements exist
+    const addTaskButton = document.querySelector('.addTaskBtn');
+    const dialog = document.querySelector('dialog');
+
+    if (addTaskButton && dialog) {
+        addTaskButton.addEventListener('click', () => {
+            dialog.showModal();
+                });
+         } else {
+             console.error("Add Task button or dialog not found.");
+         }
+
+    // Event listeners for tab switching
     if (allTaskTab && todayTaskTab && completedTaskTab) {
         allTaskTab.addEventListener("click", () => {
             removeAllContent();

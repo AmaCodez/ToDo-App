@@ -36,7 +36,7 @@ const allTask = () => {
         } else {
             const newTask = new TaskList (name, date, priority, note); 
             taskStore.tasks.push(newTask);
-            console.log("Task added:", taskStore.tasks);
+            console.log("Task added:", taskStore.tasks); //Debugging line
         }
        renderTaskList(taskStore.tasks);
     };
@@ -78,6 +78,7 @@ window.editTask = (task, index) => {
     isEditing = true;
     editIndex = index;
 
+    //Pre-fill form with existitng task data
     document.querySelector('#taskName').value = task.name;
     document.querySelector('#dueDate').value = task.date;
     document.querySelector('#priority').value = task.priority;
