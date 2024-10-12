@@ -3,13 +3,14 @@ import { renderTaskList } from './utils';
 
 const allTask = () => {
     const main = document.querySelector('#content');
+    main.className = '';
+    main.classList.add('mytask');
+
     const newTaskBtn = document.querySelector('.newTask');
     const cancel = document.querySelector('.cancel');
-    const createTaskBtn = document.querySelector('.addTaskBtn');
+    // const createTaskBtn = document.querySelector('.addTaskBtn');
     const dialog = document.querySelector('dialog');
     const form = document.querySelector('form');
-
-    main.classList.add('mytask');
 
     let isEditing = false; 
     let editIndex = null;
@@ -46,32 +47,36 @@ function setupEventListeners () {
     // createTaskBtn.addEventListener('click', () => {
     //     dialog.showModal();
     //  });
-    
-     newTaskBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log('Add button clicked');
-    
-        const taskFormName = document.querySelector('#taskName').value;
-        const taskFormDate = document.querySelector('#dueDate').value;
-        const taskFormPriority = document.querySelector('#priority').value;
-        const taskFormDescription = document.querySelector('#description').value;
-    
-    addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+    if(newTaskBtn){
+        console.log('newTaskBtn found, attaching listener');
 
-    form.reset();
-    dialog.close();
-    });
-
-    cancel.addEventListener('click', (event) => {
-        event.preventDefault();
-        dialog.close();
-     });
-
+        newTaskBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Add button clicked');
+        
+            const taskFormName = document.querySelector('#taskName').value;
+            const taskFormDate = document.querySelector('#dueDate').value;
+            const taskFormPriority = document.querySelector('#priority').value;
+            const taskFormDescription = document.querySelector('#description').value;
+        
+        addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+    
+            form.reset();
+            dialog.close();
+        });
+    } else {
+        console.error('newTaskBtn not found!');
+    }
+     
+    if(cancel) {
+        cancel.addEventListener('click', (event) => {
+            event.preventDefault();
+            form.reset();
+            dialog.close();
+         });
+    }
 }
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed');
     setupEventListeners ();
-});
 
 // Function to open the edit dialog with the selected task's data
 window.editTask = (task, index) => {

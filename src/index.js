@@ -12,6 +12,7 @@ export function removeAllContent() {
         const taskContainer = document.createElement('div');
         taskContainer.id = 'task-container';
         main.appendChild(taskContainer);
+        console.log('Task container added back to the DOM');
     } else {
         console.log("Main content area not found!");
     }

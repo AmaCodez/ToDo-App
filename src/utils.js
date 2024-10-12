@@ -2,6 +2,7 @@ import editImg from '../asset/pencil.png';
 import deleteImg from '../asset/delete.png';
 
 export function renderTaskList(taskArray) {
+    console.log('Rendering task list:', taskArray);
     const taskContainer = document.querySelector('#task-container');
     // taskContainer.innerHTML = ''; 
 
