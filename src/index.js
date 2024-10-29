@@ -18,20 +18,8 @@ export function removeAllContent() {
     }
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     const addTaskButton = document.querySelector('.addTaskBtn');
-//     const dialog = document.querySelector('dialog');
-
-//     if (addTaskButton && dialog) {
-//         addTaskButton.addEventListener('click', () => {
-//             dialog.showModal();
-//         });
-//     } else {
-//         console.error("Add Task button or dialog not found.");
-//     }
-// });
-
 document.addEventListener("DOMContentLoaded", () => {
+    let activeTab = "myTasks";
     // Load default tab
     allTask();
 
@@ -53,18 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Event listeners for tab switching
     if (allTaskTab && todayTaskTab && completedTaskTab) {
         allTaskTab.addEventListener("click", () => {
+            activeTab = "myTasks"; 
             removeAllContent();
             allTask();
             console.log('alltask button clicked');
         });
 
         todayTaskTab.addEventListener("click", () => {
+            activeTab = "todayTasks";
             removeAllContent();
             today();
             console.log('today button clicked');
         });
 
         completedTaskTab.addEventListener("click", () => {
+            activeTab = "completedTasks";
             removeAllContent();
             completed();
             console.log('completed button clicked');
@@ -72,27 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error("One or more tab buttons not found!");
     }
+
+    document.querySelector('.newTask').addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Add the task (this part is handled in mytask.js)
+        
+        dialog.close();
+        
+        if (activeTab === "myTasks") {
+            allTask();
+        } else if (activeTab === "todayTasks") {
+            today();
+        } else if (activeTab === "completedTasks") {
+            completed();
+        }
+    });
 });
-
-// const allTaskTab = document.querySelector("#myTasks");
-// allTaskTab.addEventListener("click", () => {
-//     removeAllContent();
-//     allTask();
-// });
-
-// const todayTaskTab = document.querySelector("#todayTask");
-// todayTaskTab.addEventListener("click", () => {
-//     removeAllContent();
-//     today();
-// });
-
-// const completedTaskTab= document.querySelector("#completedTask");
-// completedTaskTab.addEventListener("click", () => {
-//     removeAllContent();
-//     completed();
-// });
-
-// export function removeAllContent() {
-//     const main = document.querySelector("#content")
-//     main.innerHTML = '';
-// };

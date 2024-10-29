@@ -14,7 +14,7 @@ const completed = () => {
         main.appendChild(taskContainer);
     }
 
-    const completedTasks = taskStore.tasks.filter(task => task.completed === true);
+    const completedTasks = taskStore.tasks.filter(task => task.completed);
     renderTaskList(completedTasks);
 };
 
