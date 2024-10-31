@@ -49,13 +49,6 @@ const allTask = () => {
         console.log('isEditing:', isEditing, 'editIndex:', editIndex);
 
         if (isEditing) {
-            // Update the existing task
-            // taskStore.tasks[editIndex].name = name;
-            // taskStore.tasks[editIndex].date = date;
-            // taskStore.tasks[editIndex].priority = priority;
-            // taskStore.tasks[editIndex].note = note;
-
-            // console.log("Task updated:", taskStore.tasks[editIndex]);
 
             if (editIndex !== null && editIndex >= 0 && editIndex < taskStore.tasks.length) {
                 taskStore.tasks[editIndex].name = name;
@@ -68,14 +61,12 @@ const allTask = () => {
                 console.error("Invalid editIndex, task not updated");
             }
 
-            isEditing = false; // Reset the edit mode
-            editIndex = null;
         } else {
             const newTask = new TaskList (name, date, priority, note); 
             taskStore.tasks.push(newTask);
             console.log("Task added:", taskStore.tasks);
         }
-        //    renderTaskList(taskStore.tasks);
+     
         filterAndRenderMyTasks();
 
         console.log('Task list after rendering:', taskStore.tasks);
@@ -102,8 +93,17 @@ function setupEventListeners () {
                 taskFormDescription
             });
 
-        addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+            if (isEditing) {
     
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+        
+                isEditing = false;
+                editIndex = null;
+        
+                newTaskBtn.textContent = 'Add';
+            } else {
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+            }
 
         form.reset();
         dialog.close();
@@ -129,6 +129,8 @@ function setupEventListeners () {
 window.editTask = (task, index) => {
     isEditing = true;
     editIndex = index;
+
+    newTaskBtn.textContent = 'Update';
 
     console.log('Editing task at index:', editIndex, task);
 
