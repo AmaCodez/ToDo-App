@@ -1,5 +1,6 @@
 import taskStore from './taskStore';
 import { renderTaskList } from './utils';
+import { editTask } from './index.js';
 
 const allTask = () => {
     const main = document.querySelector('#content');
@@ -10,9 +11,6 @@ const allTask = () => {
     const cancel = document.querySelector('.cancel');
     const dialog = document.querySelector('dialog');
     const form = document.querySelector('form');
-
-    let isEditing = false; 
-    let editIndex = null;
 
     class TaskList {
         constructor (name, date, priority, note, completed = false) {
@@ -38,7 +36,6 @@ const allTask = () => {
     filterAndRenderMyTasks();
 
     function addTask (name, date, priority, note){ 
-
         console.log('Inside addTask:', { name, date, priority, note });
 
         if (!name || name.trim() === '') {
@@ -48,9 +45,8 @@ const allTask = () => {
 
         console.log('isEditing:', isEditing, 'editIndex:', editIndex);
 
-        if (isEditing) {
-
-            if (editIndex !== null && editIndex >= 0 && editIndex < taskStore.tasks.length) {
+        if (window.isEditing) {
+            if (window.editIndex !== null && editIndex >= 0 && editIndex < taskStore.tasks.length) {
                 taskStore.tasks[editIndex].name = name;
                 taskStore.tasks[editIndex].date = date;
                 taskStore.tasks[editIndex].priority = priority;
@@ -60,20 +56,21 @@ const allTask = () => {
             } else {
                 console.error("Invalid editIndex, task not updated");
             }
-
-        } else {
+         } else {
             const newTask = new TaskList (name, date, priority, note); 
             taskStore.tasks.push(newTask);
             console.log("Task added:", taskStore.tasks);
         }
      
-        filterAndRenderMyTasks();
+        window.isEditing = false; 
+        window.editIndex = null;
+        newTaskBtn.textContent = 'Add';
 
+        filterAndRenderMyTasks();
         console.log('Task list after rendering:', taskStore.tasks);
     };
 
 function setupEventListeners () {
-
     if(newTaskBtn){
         console.log('newTaskBtn found, attaching listener');
 
@@ -85,28 +82,11 @@ function setupEventListeners () {
             const taskFormDate = document.querySelector('#dueDate').value;
             const taskFormPriority = document.querySelector('#priority').value;
             const taskFormDescription = document.querySelector('#description').value;
-       
-            console.log({
-                taskFormName,
-                taskFormDate,
-                taskFormPriority,
-                taskFormDescription
-            });
+            
+            addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
 
-            if (isEditing) {
-    
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
-        
-                isEditing = false;
-                editIndex = null;
-        
-                newTaskBtn.textContent = 'Add';
-            } else {
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
-            }
-
-        form.reset();
-        dialog.close();
+            form.reset();
+            dialog.close();
 
         });
     } else {
@@ -127,22 +107,23 @@ function setupEventListeners () {
 
 // Function to open the edit dialog with the selected task's data
 window.editTask = (task, index) => {
-    isEditing = true;
-    editIndex = index;
+    editTask(task, index);
+    // isEditing = true;
+    // editIndex = index;
 
-    newTaskBtn.textContent = 'Update';
+    // newTaskBtn.textContent = 'Update';
 
-    console.log('Editing task at index:', editIndex, task);
+    // console.log('Editing task at index:', editIndex, task);
 
-    console.log('isEditing is now:', isEditing);
+    // console.log('isEditing is now:', isEditing);
 
-    //Pre-fill form with existitng task data
-    document.querySelector('#taskName').value = task.name;
-    document.querySelector('#dueDate').value = task.date;
-    document.querySelector('#priority').value = task.priority;
-    document.querySelector('#description').value = task.note;
+    // //Pre-fill form with existitng task data
+    // document.querySelector('#taskName').value = task.name;
+    // document.querySelector('#dueDate').value = task.date;
+    // document.querySelector('#priority').value = task.priority;
+    // document.querySelector('#description').value = task.note;
 
-    dialog.showModal();
+    // dialog.showModal();
 };
 
 }
