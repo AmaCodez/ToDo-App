@@ -3,8 +3,6 @@ import allTask from "./mytask";
 import completed from "./completedTab";
 import today from "./todayTab";
 
-// allTask();
-
 export function removeAllContent() {
     const main = document.querySelector("#content");
     if (main) {
@@ -66,8 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector('.newTask').addEventListener('click', (e) => {
         e.preventDefault();
-
-        // Add the task (this part is handled in mytask.js)
         
         dialog.close();
         
