@@ -3,9 +3,6 @@ import allTask from "./mytask";
 import completed from "./completedTab";
 import today from "./todayTab";
 
-let isEditing = false;
-let editIndex = null;
-
 export function removeAllContent() {
     const main = document.querySelector("#content");
     if (main) {
@@ -13,11 +10,15 @@ export function removeAllContent() {
         const taskContainer = document.createElement('div');
         taskContainer.id = 'task-container';
         main.appendChild(taskContainer);
-    } 
+        console.log('Task container added back to the DOM');
+    } else {
+        console.log("Main content area not found!");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     let activeTab = "myTasks";
+    // Load default tab
     allTask();
 
     const allTaskTab = document.querySelector("#myTasks");
@@ -27,44 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const addTaskButton = document.querySelector('.addTaskBtn');
     const dialog = document.querySelector('dialog');
 
-    // if (addTaskButton && dialog) {
-    //     addTaskButton.addEventListener('click', () => {
-    //         dialog.showModal();
-    //             });
-    //      } 
+    if (addTaskButton && dialog) {
+        addTaskButton.addEventListener('click', () => {
+            dialog.showModal();
+                });
+    } else {
+             console.error("Add Task button or dialog not found.");
+         }
 
-    addTaskButton.addEventListener('click', () => {
-        const taskData = {
-            name: document.querySelector('#taskName').value,
-            date: document.querySelector('#dueDate').value,
-            priority: document.querySelector('#priority').value,
-            note: document.querySelector('#description').value
-        };
-
-        if (isEditing) {
-            taskStore.tasks[editIndex] = taskData;
-            console.log(`Updated task at index ${editIndex}`, taskStore.tasks[editIndex]);
-
-            isEditing = false;
-            editIndex = null;
-            addTaskButton.textContent = 'Add'; 
-        } else {
-            taskStore.tasks.push(taskData);
-            console.log("New task added:", taskData);
-        }
-
-        dialog.close();
-        form.reset();
-
-        if (activeTab === "myTasks") {
-            allTask();
-        } else if (activeTab === "todayTasks") {
-            today();
-        } else if (activeTab === "completedTasks") {
-            completed();
-        }
-    });
-    
     // Event listeners for tab switching
     if (allTaskTab && todayTaskTab && completedTaskTab) {
         allTaskTab.addEventListener("click", () => {
@@ -87,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
             completed();
             console.log('completed button clicked');
         });
+    } else {
+        console.error("One or more tab buttons not found!");
     }
 
     // document.querySelector('.newTask').addEventListener('click', (e) => {
@@ -103,16 +76,3 @@ document.addEventListener("DOMContentLoaded", () => {
     //     }
     // });
 });
-
-export function editTask(task, index) {
-    isEditing = true;
-    editIndex = index;
-
-    document.querySelector('#taskName').value = task.name;
-    document.querySelector('#dueDate').value = task.date;
-    document.querySelector('#priority').value = task.priority;
-    document.querySelector('#description').value = task.note;
-
-    addTaskButton.textContent = 'Update';
-    dialog.showModal();
-}
