@@ -2,6 +2,7 @@ import "./styles.css";
 import allTask from "./mytask";
 import completed from "./completedTab";
 import today from "./todayTab";
+import upcoming from "./upcomingTab";
 
 export function removeAllContent() {
     const main = document.querySelector("#content");
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const allTaskTab = document.querySelector("#myTasks");
     const todayTaskTab = document.querySelector("#todayTask");
     const completedTaskTab = document.querySelector("#completedTask");
+    const upcomingTaskTab = document.querySelector("#upcomingTask");
 
     const addTaskButton = document.querySelector('.addTaskBtn');
     const dialog = document.querySelector('dialog');
@@ -50,6 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
             removeAllContent();
             today();
             console.log('today button clicked');
+        });
+
+        upcomingTaskTab.addEventListener("click", () => {
+            activeTab = "upcomingTasks";
+            removeAllContent();
+            upcoming();
+            console.log('upcoming button clicked');
         });
 
         completedTaskTab.addEventListener("click", () => {

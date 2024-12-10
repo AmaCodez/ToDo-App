@@ -1,5 +1,7 @@
 import editImg from '../asset/pencil.png';
 import deleteImg from '../asset/delete.png';
+import taskStore from './taskStore';
+import { isTodayOrUpcoming } from './mytask';
 
 export function renderTaskList(taskArray) {
     console.log('Rendering task list:', taskArray);
@@ -27,11 +29,11 @@ export function renderTaskList(taskArray) {
                     exclamation = '!';
             }
 
-            const taskName = document.createElement('label');
+            const taskName = document.createElement('label'); // Task name
             taskName.id = 'task-name';
             taskName.textContent = `${exclamation} ${task.name}`;
 
-            const taskNameInput = document.createElement('input');
+            const taskNameInput = document.createElement('input'); // Checkbox
             taskNameInput.type = 'checkbox'; 
             taskNameInput.name = 'userListName';
             taskNameInput.checked = task.completed;
@@ -41,13 +43,17 @@ export function renderTaskList(taskArray) {
                 renderTaskList(taskArray);
             });
 
-            const taskDescription = document.createElement('p');
+            const taskDescription = document.createElement('p'); // Task description
             taskDescription.classList.add('task-description');
             taskDescription.textContent = task.note;
 
-            const taskDate = document.createElement('div');
+            const taskDate = document.createElement('div'); // Task date
             taskDate.classList.add('task-date');
             taskDate.textContent = task.date;
+
+            if (isTodayOrUpcoming(task) === 'overdue') {
+                taskDate.classList.add('overdue'); 
+            }
 
             const taskControl = document.createElement('div');
             taskControl.classList.add('task-control');
@@ -67,6 +73,14 @@ export function renderTaskList(taskArray) {
             taskDelete.classList.add('deleteBtn'); 
 
             taskDelete.addEventListener('click', () => {
+                const taskIndexInStore = taskStore.tasks.findIndex(
+                    (storedTask) => storedTask === taskArray[index]
+                );
+            
+                if (taskIndexInStore > -1) {
+                    taskStore.tasks.splice(taskIndexInStore, 1); // Update the global store
+                }
+
                 taskArray.splice(index, 1);
                 renderTaskList(taskArray); //Refresh the task list display
             });

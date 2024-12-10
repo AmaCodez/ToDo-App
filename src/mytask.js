@@ -1,6 +1,22 @@
 import taskStore from './taskStore';
 import { renderTaskList } from './utils';
 
+export function isTodayOrUpcoming(task) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Remove time component from today
+    const taskDate = new Date(task.date);
+    taskDate.setHours(0, 0, 0, 0); // Remove time component from taskDate
+
+
+    if (taskDate < today) {
+        return 'overdue'; 
+    } else if (taskDate.getTime() === today.getTime()) {
+        return 'today'; 
+    } else {
+        return 'upcoming'; 
+    }
+}
+
 const allTask = () => {
     const main = document.querySelector('#content');
     main.className = '';
@@ -25,17 +41,13 @@ const allTask = () => {
     };
 
     function filterAndRenderMyTasks()  {
-        const myTasks = taskStore.tasks.filter(task => !task.completed && (!task.date || isTodayOrUpcoming(task.date)));
+        const myTasks = taskStore.tasks.filter(task => !task.completed);
+        // const myTasks = taskStore.tasks.filter(task => !task.completed && (!task.date || isTodayOrUpcoming(task.date)));
         console.log('Filtered tasks for rendering:', myTasks);
         renderTaskList(myTasks);
     }
 
-    function isTodayOrUpcoming(date) {
-        const today = new Date();
-        const taskDate = new Date(date);
-        return taskDate >= today; 
-    }
-
+    
     filterAndRenderMyTasks();
 
     function addTask (name, date, priority, note){ 
@@ -118,7 +130,6 @@ function setupEventListeners () {
     if(cancel) {
         cancel.addEventListener('click', (event) => {
             event.preventDefault();
-            // form.reset();
             dialog.close();
          });
     }
