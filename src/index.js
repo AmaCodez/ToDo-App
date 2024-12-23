@@ -3,17 +3,31 @@ import allTask from "./mytask";
 import completed from "./completedTab";
 import today from "./todayTab";
 import upcoming from "./upcomingTab";
+import taskStore from "./taskStore";
+
+// export function removeAllContent() {
+//     // taskStore.isEditing = false; 
+//     // taskStore.editIndex = null; 
+
+//     const main = document.querySelector("#content");
+//     if (main) {
+//         main.innerHTML = '';
+//         const taskContainer = document.createElement('div');
+//         taskContainer.id = 'task-container';
+//         main.appendChild(taskContainer);
+//         console.log('Task container added back to the DOM');
+//     } else {
+//         console.log("Main content area not found!");
+//     }
+// }
 
 export function removeAllContent() {
-    const main = document.querySelector("#content");
-    if (main) {
-        main.innerHTML = '';
-        const taskContainer = document.createElement('div');
-        taskContainer.id = 'task-container';
-        main.appendChild(taskContainer);
-        console.log('Task container added back to the DOM');
+    const taskContainer = document.querySelector('#task-container');
+    if (taskContainer) {
+        taskContainer.innerHTML = ''; // Clear only the task list content
+        console.log('Task container content cleared');
     } else {
-        console.log("Main content area not found!");
+        console.error('Task container not found!');
     }
 }
 

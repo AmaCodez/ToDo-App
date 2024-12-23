@@ -27,8 +27,8 @@ const allTask = () => {
     const dialog = document.querySelector('dialog');
     const form = document.querySelector('form');
 
-    let isEditing = false; 
-    let editIndex = null;
+    // let isEditing = false; 
+    // let editIndex = null;
 
     class TaskList {
         constructor (name, date, priority, note, completed = false) {
@@ -40,12 +40,29 @@ const allTask = () => {
         }
     };
 
-    function filterAndRenderMyTasks()  {
-        const myTasks = taskStore.tasks.filter(task => !task.completed);
-        // const myTasks = taskStore.tasks.filter(task => !task.completed && (!task.date || isTodayOrUpcoming(task.date)));
-        console.log('Filtered tasks for rendering:', myTasks);
-        renderTaskList(myTasks);
+    // function filterAndRenderMyTasks()  {
+    //     const myTasks = taskStore.tasks.filter(task => !task.completed);
+    //     // const myTasks = taskStore.tasks.filter(task => !task.completed && (!task.date || isTodayOrUpcoming(task.date)));
+    //     console.log('Filtered tasks for rendering:', myTasks);
+    //     renderTaskList(myTasks);
+    // }
+
+    let renderInProgress = false;
+
+function filterAndRenderMyTasks() {
+    if (renderInProgress) {
+        console.warn("Render already in progress. Skipping...");
+        return;
     }
+
+    renderInProgress = true;
+    const myTasks = taskStore.tasks.filter(task => !task.completed);
+    console.log('Filtered tasks for rendering:', myTasks);
+    renderTaskList(myTasks);
+
+    // Reset flag after rendering
+    renderInProgress = false;
+}
 
     
     filterAndRenderMyTasks();
@@ -53,23 +70,23 @@ const allTask = () => {
     function addTask (name, date, priority, note){ 
 
         console.log('Inside addTask:', { name, date, priority, note });
-        console.log('isEditing:', isEditing, 'editIndex:', editIndex);
+        console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
 
         if (!name || name.trim() === '') {
             console.error('Task name is required');
             return;
         }
 
-        console.log('isEditing:', isEditing, 'editIndex:', editIndex);
+        console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
 
-        if (isEditing) {
-             if (editIndex !== null && editIndex >= 0 && editIndex < taskStore.tasks.length) {
-                taskStore.tasks[editIndex].name = name;
-                taskStore.tasks[editIndex].date = date;
-                taskStore.tasks[editIndex].priority = priority;
-                taskStore.tasks[editIndex].note = note;
+        if (taskStore.isEditing) {
+             if (taskStore.editIndex !== null && taskStore.editIndex >= 0 && taskStore.editIndex < taskStore.tasks.length) {
+                taskStore.tasks[taskStore.editIndex].name = name;
+                taskStore.tasks[taskStore.editIndex].date = date;
+                taskStore.tasks[taskStore.editIndex].priority = priority;
+                taskStore.tasks[taskStore.editIndex].note = note;
     
-                console.log("Task successfuly updated at index:", editIndex, taskStore.tasks[editIndex]);
+                console.log("Task successfuly updated at index:", taskStore.editIndex, taskStore.tasks[taskStore.editIndex]);
             } else {
                 console.error("Invalid editIndex, task not updated");
             }
@@ -99,20 +116,20 @@ function setupEventListeners () {
             const taskFormDescription = document.querySelector('#description').value;
        
             console.log('Before addTask:',{
-                isEditing,
-                editIndex,
+                isEditing: taskStore.isEditing,
+                editIndex: taskStore.editIndex,
                 taskFormName,
                 taskFormDate,
                 taskFormPriority,
                 taskFormDescription
             });
 
-            if (isEditing) {
+            if (taskStore.isEditing) {
     
                 addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
         
-                isEditing = false;
-                editIndex = null;
+                taskStore.isEditing = false;
+                taskStore.editIndex = null;
         
                 newTaskBtn.textContent = 'Add';
             } else {
@@ -123,7 +140,9 @@ function setupEventListeners () {
         dialog.close();
 
         });
-    } else {
+
+        newTaskBtn.listenerAttached = true; // Prevents attaching listener multiple times
+    } else if (!newTaskBtn) {
         console.error('newTaskBtn not found!');
     }
      
@@ -140,14 +159,14 @@ function setupEventListeners () {
 
 // Function to open the edit dialog with the selected task's data
 window.editTask = (task, index) => {
-    isEditing = true;
-    editIndex = index;
+    taskStore.isEditing = true;
+    taskStore.editIndex = index;
 
     newTaskBtn.textContent = 'Update';
 
-    console.log('Editing task at index:', editIndex, task);
+    console.log('Editing task at index:', taskStore.editIndex, task);
 
-    console.log('isEditing is now:', isEditing);
+    console.log('isEditing is now:', taskStore.isEditing);
 
     //Pre-fill form with existitng task data
     document.querySelector('#taskName').value = task.name;
