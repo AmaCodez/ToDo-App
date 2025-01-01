@@ -21,6 +21,35 @@ import taskStore from "./taskStore";
 //     }
 // }
 
+const newProjectBtn = document.querySelector('.projectsBtn');
+const newProjectDialog = document.querySelector('#newProjectDialog');
+const addProjectBtn = document.querySelector('.addProjectBtn');
+const cancelProjectBtn = document.querySelector('.cancelProjectBtn');
+const projectsContainer = document.querySelector('.project-content');
+
+newProjectBtn.addEventListener('click', () => {
+    newProjectDialog.showModal();
+});
+
+addProjectBtn.addEventListener('click', (event) => {
+    event.preventDefault(); 
+
+    const projectName = document.querySelector('#projectName').value.trim();
+
+    if (projectName) {
+        
+        taskStore.projects.push({ name: projectName, tasks: [] });
+        renderProjects(); 
+        newProjectDialog.close();
+    } else {
+        alert('Project name cannot be empty!');
+    }
+});
+
+cancelProjectBtn.addEventListener('click', () => {
+    newProjectDialog.close();
+});
+
 export function removeAllContent() {
     const taskContainer = document.querySelector('#task-container');
     if (taskContainer) {
@@ -85,17 +114,4 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("One or more tab buttons not found!");
     }
 
-    // document.querySelector('.newTask').addEventListener('click', (e) => {
-    //     e.preventDefault();
-        
-    //     dialog.close();
-        
-    //     if (activeTab === "myTasks") {
-    //         allTask();
-    //     } else if (activeTab === "todayTasks") {
-    //         today();
-    //     } else if (activeTab === "completedTasks") {
-    //         completed();
-    //     }
-    // });
 });
