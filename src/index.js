@@ -4,6 +4,7 @@ import completed from "./completedTab";
 import today from "./todayTab";
 import upcoming from "./upcomingTab";
 import taskStore from "./taskStore";
+import { renderProjects } from './projectUtils';
 
 // export function removeAllContent() {
 //     // taskStore.isEditing = false; 

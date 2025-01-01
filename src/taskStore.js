@@ -2,11 +2,7 @@ const taskStore = {
     tasks: [],
     isEditing : false,
     editIndex : null,
+    projects: [],
 };
 
-// const projects = [
-//     {
-//         name:
-//     }
-// ];
 export default taskStore;
