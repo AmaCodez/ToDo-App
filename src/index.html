@@ -20,6 +20,17 @@
                 <button class="projectsBtn">New Project</button>
             </div>
             <div class="project-content"></div>
+
+            <dialog id="newProjectDialog">
+                <form method="dialog">
+                    <label for="projectName">Project Name:</label>
+                    <input type="text" id="projectName" placeholder="Enter project name" required />
+                    <div class="dialog-buttons">
+                        <button type="submit" class="addProjectBtn">Add</button>
+                        <button type="button" class="cancelProjectBtn">Cancel</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
     </header>
      <main id="content"> <!--Tab switch, where task will be displayed-->
