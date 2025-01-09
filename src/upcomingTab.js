@@ -14,7 +14,10 @@ const upcoming = () => {
         main.appendChild(taskContainer);
     }
 
-    const upcomingTasks = taskStore.tasks.filter(task => isTodayOrUpcoming(task) === 'upcoming');
+    // const upcomingTasks = taskStore.tasks.filter(task => isTodayOrUpcoming(task) === 'upcoming');
+    const upcomingTasks = taskStore.tasks.filter(task => 
+        task.date && task.date.trim() !== '' // Ensure the task has a valid date
+    );
     console.log('Filtered tasks for Today tab:', upcomingTasks);
     renderTaskList(upcomingTasks);
 };

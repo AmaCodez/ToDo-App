@@ -17,15 +17,26 @@ export function isTodayOrUpcoming(task) {
     }
 }
 
-const allTask = () => {
+const allTask = (projectName = null) => {
     const main = document.querySelector('#content');
     main.className = '';
     main.classList.add('mytask');
 
     const newTaskBtn = document.querySelector('.newTask');
     const cancel = document.querySelector('.cancel');
-    const dialog = document.querySelector('dialog');
+    const dialog = document.querySelector('#taskDialog');
     const form = document.querySelector('form');
+
+     // Filter tasks by project if projectName is provided
+     const filteredTasks = taskStore.tasks.filter(task => 
+        projectName ? task.project === projectName : !task.completed
+    );
+
+    console.log('Filtered tasks for rendering:', filteredTasks);
+    renderTaskList(filteredTasks);
+
+    // Set up the event listeners for task form handling
+    setupEventListeners(projectName);
 
     // let isEditing = false; 
     // let editIndex = null;
@@ -67,9 +78,9 @@ function filterAndRenderMyTasks() {
     
     filterAndRenderMyTasks();
 
-    function addTask (name, date, priority, note){ 
+    function addTask (name, date, priority, note, project = null){ 
 
-        console.log('Inside addTask:', { name, date, priority, note });
+        console.log('Inside addTask:', { name, date, priority, note, project });
         console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
 
         if (!name || name.trim() === '') {
@@ -81,29 +92,33 @@ function filterAndRenderMyTasks() {
 
         if (taskStore.isEditing) {
              if (taskStore.editIndex !== null && taskStore.editIndex >= 0 && taskStore.editIndex < taskStore.tasks.length) {
-                taskStore.tasks[taskStore.editIndex].name = name;
-                taskStore.tasks[taskStore.editIndex].date = date;
-                taskStore.tasks[taskStore.editIndex].priority = priority;
-                taskStore.tasks[taskStore.editIndex].note = note;
-    
+                taskStore.tasks[taskStore.editIndex] = { name, date, priority, note, project };
+                // taskStore.tasks[taskStore.editIndex].name = name;
+                // taskStore.tasks[taskStore.editIndex].date = date;
+                // taskStore.tasks[taskStore.editIndex].priority = priority;
+                // taskStore.tasks[taskStore.editIndex].note = note;
+                // taskStore.tasks[taskStore.editIndex].project = project;
+
                 console.log("Task successfuly updated at index:", taskStore.editIndex, taskStore.tasks[taskStore.editIndex]);
             } else {
                 console.error("Invalid editIndex, task not updated");
             }
         } else {
-            const newTask = new TaskList (name, date, priority, note); 
+            // const newTask = new TaskList (name, date, priority, note); 
+            const newTask = { name, date, priority, note, project, completed: false };
             taskStore.tasks.push(newTask);
             console.log("Task added:", taskStore.tasks);
         }
+        // allTask(project);
      
         filterAndRenderMyTasks();
 
         console.log('Task list after rendering:', taskStore.tasks);
     };
 
-function setupEventListeners () {
+function setupEventListeners (projectName = null) {
 
-    if(newTaskBtn){
+    if(newTaskBtn && !newTaskBtn.listenerAttached){
         console.log('newTaskBtn found, attaching listener');
 
         newTaskBtn.addEventListener('click', (e) => {
@@ -121,19 +136,17 @@ function setupEventListeners () {
                 taskFormName,
                 taskFormDate,
                 taskFormPriority,
-                taskFormDescription
+                taskFormDescription,
+                projectName,
             });
 
             if (taskStore.isEditing) {
-    
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
-        
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
                 taskStore.isEditing = false;
                 taskStore.editIndex = null;
-        
                 newTaskBtn.textContent = 'Add';
             } else {
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription);
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
             }
 
         form.reset();

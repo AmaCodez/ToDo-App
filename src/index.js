@@ -4,7 +4,7 @@ import completed from "./completedTab";
 import today from "./todayTab";
 import upcoming from "./upcomingTab";
 import taskStore from "./taskStore";
-import { renderProjects } from './projectUtils';
+import { renderProjects, loadProjectTasks, removeAllContent } from './projectUtils';
 
 // export function removeAllContent() {
 //     // taskStore.isEditing = false; 
@@ -51,15 +51,46 @@ cancelProjectBtn.addEventListener('click', () => {
     newProjectDialog.close();
 });
 
-export function removeAllContent() {
-    const taskContainer = document.querySelector('#task-container');
-    if (taskContainer) {
-        taskContainer.innerHTML = ''; // Clear only the task list content
-        console.log('Task container content cleared');
-    } else {
-        console.error('Task container not found!');
+export function createProject(projectName) {
+    if (!projectName.trim()) {
+        console.error("Project name is required");
+        return;
     }
+
+    // Prevent duplicate projects
+    if (taskStore.projects.some(project => project.name === projectName)) {
+        console.warn("Project already exists");
+        return;
+    }
+
+    // Store project as an object with an empty tasks array
+    taskStore.projects.push({ name: projectName, tasks: [] });
+
+    // Create project button dynamically
+    const projectContainer = document.querySelector(".project-content");
+    const projectBtn = document.createElement("button");
+    projectBtn.textContent = projectName;
+    projectBtn.classList.add("project-item"); // Ensure this matches your CSS
+
+    projectBtn.addEventListener("click", () => {
+        loadProjectTasks(projectName);
+    });
+
+    projectContainer.appendChild(projectBtn);
+    console.log(`Project created: ${projectName}`);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderProjects(); // Render existing projects on page load
+
+    // Attach event listener to project container to handle dynamic projects
+    document.querySelector('.project-content').addEventListener('click', (event) => {
+        if (event.target.classList.contains('project-item')) {
+            const projectName = event.target.textContent.trim();
+            loadProjectTasks(projectName); // Load only this project's tasks
+        }
+    });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     let activeTab = "myTasks";
@@ -72,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const upcomingTaskTab = document.querySelector("#upcomingTask");
 
     const addTaskButton = document.querySelector('.addTaskBtn');
-    const dialog = document.querySelector('dialog');
+    const dialog = document.querySelector('#taskDialog');
 
     if (addTaskButton && dialog) {
         addTaskButton.addEventListener('click', () => {

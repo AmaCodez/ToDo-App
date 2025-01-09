@@ -1,8 +1,8 @@
 const taskStore = {
     tasks: [],
+    projects: [],
     isEditing : false,
     editIndex : null,
-    projects: [],
 };
 
 export default taskStore;
