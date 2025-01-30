@@ -17,6 +17,81 @@ export function isTodayOrUpcoming(task) {
     }
 }
 
+ let renderInProgress = false;
+
+function filterAndRenderMyTasks() {
+    if (renderInProgress) {
+        console.warn("Render already in progress. Skipping...");
+        return;
+    }
+
+    renderInProgress = true;
+    const myTasks = taskStore.tasks.filter(task => !task.completed);
+    console.log('Filtered tasks for rendering:', myTasks);
+    renderTaskList(myTasks);
+
+    // Reset flag after rendering
+    renderInProgress = false;
+}
+
+export function addTask (name, date, priority, note, project = null) { 
+    console.log('Inside addTask:', { name, date, priority, note, project });
+    console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
+
+    if (!name || name.trim() === '') {
+        console.error('Task name is required');
+        alert('Task name cannot be empty!');
+        return;
+    }
+
+    if (taskStore.isEditing) {
+        if (taskStore.editIndex !== null && taskStore.editIndex >= 0) {
+            if (project) {
+                // Find the project and update the task inside it
+                const targetProject = taskStore.projects.find(p => p.name === project);
+                if (targetProject && taskStore.editIndex < targetProject.tasks.length) {
+                    targetProject.tasks[taskStore.editIndex] = { name, date, priority, note, project };
+                    console.log(` ✅ Updated task in project "${project}" at index ${taskStore.editIndex}:`, targetProject.tasks);
+                } else {
+                    console.error(` ❌ Project "${project}" not found or invalid index!`);
+                }
+            } else {
+                // Update general tasks (not in a project)
+                taskStore.tasks[taskStore.editIndex] = { name, date, priority, note, project };
+                console.log(" ✅ Task successfully updated at index:", taskStore.editIndex, taskStore.tasks[taskStore.editIndex]);
+            }
+        } //else {
+            //console.error(" ❌ Invalid editIndex, task not updated");
+       // }
+    } else {
+        // Creating a new task
+        const newTask = { name, date, priority, note, project, completed: false };
+
+        console.log(`📌 addTask() called with project: "${project}"`);
+
+        if (project) {
+            console.log(`🔍 Checking project "${project}" before adding task...`);
+            const targetProject = taskStore.projects.find(p => p.name === project);
+            if (targetProject) {
+                console.log(`Found project:`, targetProject);
+                targetProject.tasks.push(newTask);
+                console.log(` ✅ Task added to project "${project}":`, targetProject.tasks);
+                renderTaskList(targetProject.tasks); 
+            } else {
+                console.error(` ❌ Project "${project}" not found!`);
+            }
+        } else {
+            // If no project, add to general taskStore.tasks
+            taskStore.tasks.push(newTask);
+            console.log("✅ Task added to general list.");
+            filterAndRenderMyTasks();
+        }
+    }
+
+    // filterAndRenderMyTasks();
+    console.log('Current projects:', taskStore.projects);
+}
+
 const allTask = (projectName = null) => {
     const main = document.querySelector('#content');
     main.className = '';
@@ -51,70 +126,8 @@ const allTask = (projectName = null) => {
         }
     };
 
-    // function filterAndRenderMyTasks()  {
-    //     const myTasks = taskStore.tasks.filter(task => !task.completed);
-    //     // const myTasks = taskStore.tasks.filter(task => !task.completed && (!task.date || isTodayOrUpcoming(task.date)));
-    //     console.log('Filtered tasks for rendering:', myTasks);
-    //     renderTaskList(myTasks);
-    // }
-
-    let renderInProgress = false;
-
-function filterAndRenderMyTasks() {
-    if (renderInProgress) {
-        console.warn("Render already in progress. Skipping...");
-        return;
-    }
-
-    renderInProgress = true;
-    const myTasks = taskStore.tasks.filter(task => !task.completed);
-    console.log('Filtered tasks for rendering:', myTasks);
-    renderTaskList(myTasks);
-
-    // Reset flag after rendering
-    renderInProgress = false;
-}
-
     
     filterAndRenderMyTasks();
-
-    function addTask (name, date, priority, note, project = null){ 
-
-        console.log('Inside addTask:', { name, date, priority, note, project });
-        console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
-
-        if (!name || name.trim() === '') {
-            console.error('Task name is required');
-            return;
-        }
-
-        console.log('isEditing:', taskStore.isEditing, 'editIndex:', taskStore.editIndex);
-
-        if (taskStore.isEditing) {
-             if (taskStore.editIndex !== null && taskStore.editIndex >= 0 && taskStore.editIndex < taskStore.tasks.length) {
-                taskStore.tasks[taskStore.editIndex] = { name, date, priority, note, project };
-                // taskStore.tasks[taskStore.editIndex].name = name;
-                // taskStore.tasks[taskStore.editIndex].date = date;
-                // taskStore.tasks[taskStore.editIndex].priority = priority;
-                // taskStore.tasks[taskStore.editIndex].note = note;
-                // taskStore.tasks[taskStore.editIndex].project = project;
-
-                console.log("Task successfuly updated at index:", taskStore.editIndex, taskStore.tasks[taskStore.editIndex]);
-            } else {
-                console.error("Invalid editIndex, task not updated");
-            }
-        } else {
-            // const newTask = new TaskList (name, date, priority, note); 
-            const newTask = { name, date, priority, note, project, completed: false };
-            taskStore.tasks.push(newTask);
-            console.log("Task added:", taskStore.tasks);
-        }
-        // allTask(project);
-     
-        filterAndRenderMyTasks();
-
-        console.log('Task list after rendering:', taskStore.tasks);
-    };
 
 function setupEventListeners (projectName = null) {
 
@@ -130,6 +143,8 @@ function setupEventListeners (projectName = null) {
             const taskFormPriority = document.querySelector('#priority').value;
             const taskFormDescription = document.querySelector('#description').value;
        
+            const selectedProject = document.querySelector('#taskDialog').dataset.project || null;
+
             console.log('Before addTask:',{
                 isEditing: taskStore.isEditing,
                 editIndex: taskStore.editIndex,
@@ -137,16 +152,16 @@ function setupEventListeners (projectName = null) {
                 taskFormDate,
                 taskFormPriority,
                 taskFormDescription,
-                projectName,
+                selectedProject,
             });
 
             if (taskStore.isEditing) {
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, selectedProject);
                 taskStore.isEditing = false;
                 taskStore.editIndex = null;
                 newTaskBtn.textContent = 'Add';
             } else {
-                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, selectedProject);
             }
 
         form.reset();

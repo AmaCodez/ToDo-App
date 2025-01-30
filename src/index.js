@@ -6,21 +6,6 @@ import upcoming from "./upcomingTab";
 import taskStore from "./taskStore";
 import { renderProjects, loadProjectTasks, removeAllContent } from './projectUtils';
 
-// export function removeAllContent() {
-//     // taskStore.isEditing = false; 
-//     // taskStore.editIndex = null; 
-
-//     const main = document.querySelector("#content");
-//     if (main) {
-//         main.innerHTML = '';
-//         const taskContainer = document.createElement('div');
-//         taskContainer.id = 'task-container';
-//         main.appendChild(taskContainer);
-//         console.log('Task container added back to the DOM');
-//     } else {
-//         console.log("Main content area not found!");
-//     }
-// }
 
 const newProjectBtn = document.querySelector('.projectsBtn');
 const newProjectDialog = document.querySelector('#newProjectDialog');

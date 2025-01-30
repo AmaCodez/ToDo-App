@@ -1,4 +1,5 @@
 import taskStore from './taskStore';
+import { addTask } from './mytask';
 import { renderTaskList } from './utils';
 
 export function renderProjects() {
@@ -31,16 +32,18 @@ export function removeAllContent() {
 }
 
 export function loadProjectTasks(projectName) {
-    console.log(`Loading tasks for project: ${projectName}`);
-    const main = document.querySelector('#content');
-
+    console.log(` Loading tasks for project: ${projectName}`);
+   
     removeAllContent(); // Clears the current task display
 
     const project = taskStore.projects.find(p => p.name === projectName);
     
     if (project) {
-        console.log(`Found project: ${projectName}, Tasks:`, project.tasks);
+        console.log(`✅ Found project: ${projectName}, Tasks:`, project.tasks);
 
+        if (project.tasks.length === 0) {
+            console.warn(`⚠️ No tasks found for project "${projectName}"`);
+        }
         // Render the tasks inside the selected project
         renderTaskList(project.tasks);  
 
@@ -58,6 +61,8 @@ export function loadProjectTasks(projectName) {
 
         let existingBtn = document.querySelector('.projectAddTaskBtn');
         if (!existingBtn) {
+            
+            const main = document.querySelector('#content');
             const addTaskBtn = document.createElement('button');
             addTaskBtn.textContent = '+ Add Task';
             addTaskBtn.className = 'projectAddTaskBtn';
@@ -69,55 +74,15 @@ export function loadProjectTasks(projectName) {
             });
         }
     } else {
-        console.warn(`Project "${projectName}" not found.`);
+        console.warn(`❌ Project "${projectName}" not found.`);
     }
 }
-
-function handleProjectTaskAdd(event) {
-    event.preventDefault();
-
-    const taskFormName = document.querySelector("#taskName").value.trim();
-    const taskFormDate = document.querySelector("#dueDate").value;
-    const taskFormPriority = document.querySelector("#priority").value;
-    const taskFormDescription = document.querySelector("#description").value;
-
-    if (taskFormName) {
-        const projectName = document.querySelector("#taskDialog").dataset.project; // Get project name from dialog attribute
-        const newTask = { 
-            name: taskFormName, 
-            date: taskFormDate, 
-            priority: taskFormPriority, 
-            note: taskFormDescription,
-            completed: false,
-        };
-
-        // Find the selected project and add the new task
-        const project = taskStore.projects.find(p => p.name === projectName);
-        if (project) {
-            project.tasks.push(newTask);
-            console.log(`Added new task to project: ${projectName}`, newTask);
-        } else {
-            console.warn(`Project "${projectName}" not found.`);
-        }
-
-        console.log(`Added task to project: ${projectName}`, newTask);
-        document.querySelector("#taskDialog").close();
-        loadProjectTasks(projectName);
-    } else {
-        alert("Task name cannot be empty!");
-    }
-}
-
-// Ensure only **one** event listener is attached
-document.addEventListener("DOMContentLoaded", () => {
-    const projectAddTaskBtn = document.querySelector('.projectAddTaskBtn');
-    if (projectAddTaskBtn) {
-        projectAddTaskBtn.addEventListener("click", handleProjectTaskAdd);
-    }
-});
 
 export function openTaskForm(projectName) {
+    console.log(`Creating task for project: ${projectName}`);
     const taskDialog = document.querySelector('#taskDialog');
+    taskDialog.dataset.project = projectName; // Store project name for later reference
+
     // Reset form to prevent pre-filled data
     document.querySelector('#taskName').value = "";
     document.querySelector('#dueDate').value = "";
@@ -129,56 +94,66 @@ export function openTaskForm(projectName) {
     taskStore.editIndex = null;
     document.querySelector('.newTask').textContent = "Add";
 
-    taskDialog.dataset.project = projectName; // Store project name for later reference
     taskDialog.showModal();
+
+    // Select the correct button for adding project tasks
+    const projectAddTaskBtn = document.querySelector('.projectAddTaskBtn');
+    if (projectAddTaskBtn) {
+        projectAddTaskBtn.onclick = (event) => {
+            event.preventDefault();
+
+            const taskFormName = document.querySelector("#taskName").value.trim();
+            const taskFormDate = document.querySelector("#dueDate").value;
+            const taskFormPriority = document.querySelector("#priority").value;
+            const taskFormDescription = document.querySelector("#description").value;
+
+            console.log(`Creating task for project: ${projectName}`);
+
+            if (taskFormName) {
+                addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
+                loadProjectTasks(projectName); // Refresh tasks in the project
+                taskDialog.close();
+            } else {
+                alert("Task name cannot be empty!");
+            }
+        };
+    }
+
+    // if (!projectAddTaskBtn) {
+    //     console.error("⚠️ Project Add Task button not found!");
+    //     return;
+    // }
+
+    // if (projectAddTaskBtn) {
+    //     projectAddTaskBtn.removeEventListener('click', handleProjectTaskAdd);
+    //     projectAddTaskBtn.addEventListener('click', handleProjectTaskAdd);
+    // }
+
+    // Remove any previous event listener to prevent multiple calls
+    // projectAddTaskBtn.removeEventListener("click", handleProjectTaskAdd);
+
+    // Define the event listener function
+    // function handleProjectTaskAdd(event) {
+    //     event.preventDefault();
+
+    //     const taskFormName = document.querySelector("#taskName").value.trim();
+    //     const taskFormDate = document.querySelector("#dueDate").value;
+    //     const taskFormPriority = document.querySelector("#priority").value;
+    //     const taskFormDescription = document.querySelector("#description").value;
+
+    //     const selectedProject = taskDialog.dataset.project;
+
+    //     console.log(` Creating task for project: ${selectedProject}`);
+
+    //     if (taskFormName) {
+    //         addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, selectedProject);
+    //         loadProjectTasks(selectedProject); // Refresh the tasks in the project
+    //         taskDialog.close();
+    //     } else {
+    //         alert("Task name cannot be empty!");
+    //     }
+    // }
+
+    // Attach event listener (ONLY ONCE)
+    // projectAddTaskBtn.addEventListener("click", handleProjectTaskAdd);
 }
-
-// export function openTaskForm(projectName) {
-//     const taskDialog = document.querySelector('#taskDialog');
-//     taskDialog.showModal();
-
-//     // Ensure we target only the project-specific add task button
-//     const projectAddTaskBtn = document.querySelector('.projectAddTaskBtn');
-
-//     if (!projectAddTaskBtn) {
-//         console.error("Project Add Task button not found!");
-//         return;
-//     }
-
-//     // Remove any previously attached event listener to prevent duplicate events
-//     projectAddTaskBtn.removeEventListener("click", handleProjectTaskAdd);
-
-//     // Define the event handler function
-//     function handleProjectTaskAdd(event) {
-//         event.preventDefault();
-
-//         const taskFormName = document.querySelector("#taskName").value.trim();
-//         const taskFormDate = document.querySelector("#dueDate").value;
-//         const taskFormPriority = document.querySelector("#priority").value;
-//         const taskFormDescription = document.querySelector("#description").value;
-
-//         if (taskFormName) {
-//             const newTask = { 
-//                 name: taskFormName, 
-//                 date: taskFormDate, 
-//                 priority: taskFormPriority, 
-//                 note: taskFormDescription 
-//             };
-
-//             // Find the selected project and add the new task
-//             const project = taskStore.projects.find(p => p.name === projectName);
-//             if (project) {
-//                 project.tasks.push(newTask);
-//             }
-
-//             console.log(`Added task to project: ${projectName}`, newTask);
-//             taskDialog.close();
-//             loadProjectTasks(projectName); // Refresh project tasks
-//         } else {
-//             alert("Task name cannot be empty!");
-//         }
-//     }
-
-//     // Attach event listener only once
-//     projectAddTaskBtn.addEventListener("click", handleProjectTaskAdd);
-// }
