@@ -92,6 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (addTaskButton && dialog) {
         addTaskButton.addEventListener('click', () => {
+            const form = dialog.querySelector('form');
+            if (form) {
+              form.reset();
+            }
+            
+            // Remove any project-specific data.
+            delete dialog.dataset.project;
+            
+            // Ensure the dialog is in "add" mode (not editing).
+            taskStore.isEditing = false;
+            taskStore.editIndex = null;
+            
+            // If you are using the same form button (.newTask) in both contexts,
+            // update its text to "Add" for the global case.
+            const newTaskBtn = document.querySelector('.newTask');
+            if (newTaskBtn) {
+              newTaskBtn.textContent = 'Add';
+            }
+
             dialog.showModal();
                 });
     } else {

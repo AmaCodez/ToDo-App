@@ -75,6 +75,7 @@ export function addTask (name, date, priority, note, project = null) {
             if (targetProject) {
                 console.log(`Found project:`, targetProject);
                 targetProject.tasks.push(newTask);
+                taskStore.tasks.push(newTask); // Add to the general task list
                 console.log(` ✅ Task added to project "${project}":`, targetProject.tasks);
                 renderTaskList(targetProject.tasks); 
             } else {
