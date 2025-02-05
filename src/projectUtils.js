@@ -40,15 +40,14 @@ export function loadProjectTasks(projectName) {
     if (project) {
         console.log(`✅ Found project: ${projectName}, Tasks:`, project.tasks);
 
-        // if (project.tasks.length === 0) {
-        //     console.warn(`⚠️ No tasks found for project "${projectName}"`);
-        // }
         // Render the tasks inside the selected project
         renderTaskList(project.tasks);  
 
         let existingBtn = document.querySelector('.projectAddTaskBtn');
-        if (!existingBtn) {
-            
+        if (existingBtn) {
+            existingBtn.remove();
+        }
+
             const main = document.querySelector('#content');
             const addTaskBtn = document.createElement('button');
             addTaskBtn.textContent = '+ Add Task';
@@ -59,10 +58,10 @@ export function loadProjectTasks(projectName) {
             addTaskBtn.addEventListener("click", () => {
                 openTaskForm(projectName);
             });
-        }
-    } else {
-        console.warn(`❌ Project "${projectName}" not found.`);
-    }
+    } 
+    // else {
+    //     console.warn(`❌ Project "${projectName}" not found.`);
+    // }
 }
 
 export function openTaskForm(projectName) {
@@ -100,9 +99,10 @@ export function openTaskForm(projectName) {
                 addTask(taskFormName, taskFormDate, taskFormPriority, taskFormDescription, projectName);
                 loadProjectTasks(projectName); // Refresh tasks in the project
                 taskDialog.close();
-            } else {
-                alert("Task name cannot be empty!");
-            }
+            } 
+            // else {
+            //     alert("Task name cannot be empty!");
+            // }
         };
     }
 }
