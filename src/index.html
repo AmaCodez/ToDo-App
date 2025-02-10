@@ -38,12 +38,12 @@
      </main>
      <dialog id="taskDialog">
         <form action="" method="get" class="form">
-            <input type="text" name="usersTaskName" placeholder="Write a task name" class="form-content" id="taskName">
-            <div class="form-content">
+            <input type="text" name="usersTaskName" placeholder="Task name..." class="form-content" id="taskName">
+            <div class="form-content form-date">
                 <label for="dueDate">Due date</label>
                 <input id="dueDate" type="date">
             </div>
-            <div class="form-content">
+            <div class="form-content form-priority">
                 <label for="priority">Priority</label>
                 <select name="priority" id="priority">
                     <option value="none">None</option>
@@ -52,8 +52,8 @@
                     <option value="low">Low</option>
                 </select>
             </div>
-            <div class="form-content">
-                <label for="description"></label>
+            <div class="form-content form-description">
+                <label for="description">Task</label>
                 <textarea name="description" id="description" placeholder="What is this task about?"></textarea>
             </div>
             <div class='form-buttons'>

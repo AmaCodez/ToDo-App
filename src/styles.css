@@ -1,3 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .completed-tab {
     background-color: blue;
 }
@@ -5,6 +16,87 @@
     background-color: bisque;
 }
 
-/* body {
-    background-color: pink;
-} */
+/* Task Form */
+.form {
+    background-color: #F6F7F8;
+    border: 1px solid #D6D9DC;
+    border-radius: 3px;  
+    padding: 30px;
+    margin: 0px;
+    gap: 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-content {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    background-color: #FFFFFF;
+    border: 1px solid #D6D9DC;
+    border-radius: 3px;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    gap: 10px;
+}
+
+.form-date, .form-priority {
+ align-items: center;
+}
+.form-description{
+     flex-direction: column;
+}
+
+#taskName {
+    font-size: 1.3rem;
+    height: 7vh;
+}
+
+.form-content select,
+#dueDate {
+    padding: 5px;
+    font-size: 14px;           
+}
+
+.form-content textarea {
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+  
+    border: 1px solid #D6D9DC;
+    border-radius: 3px;
+  
+    min-height: 50px;
+    margin-bottom: 10px;
+    padding: 7px;
+    resize: none;
+  }
+
+  .form-buttons{
+    margin-top: 10px;
+  }
+
+  .newTask,
+  .cancel {
+    font-size: 16px;
+    font-weight: bold;
+  
+    color: #FFFFFF;
+    background-color: #5995DA;
+  
+    border: none;
+    border-radius: 3px;
+  
+    padding: 10px 40px;
+    cursor: pointer;
+  }
+  
+  .newTask:hover,
+  .cancel:hover {
+    background-color: #76AEED;
+  }
+  
+  .newTask:active,
+  .cancel:active {
+    background-color: #407FC7;
+  }
