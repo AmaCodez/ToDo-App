@@ -13,7 +13,10 @@ body {
     background-color: blue;
 }
 .mytask {
-    background-color: bisque;
+    background-color: rgb(196, 255, 230);
+    /* display: flex;
+    flex-direction: column;
+    gap: 10vh; */
 }
 
 /* Task Form */
@@ -100,3 +103,43 @@ body {
   .cancel:active {
     background-color: #407FC7;
   }
+
+  /* Task list */
+  .task-list { /* the whole task list*/
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid blue;
+    margin-top: 20px;
+    /* width: 50%; */
+  }
+
+  .task-items{ /* name & description is in here*/
+    margin-right: auto;
+    /* border: 1px solid black; */
+    padding: 20px;
+    width: 70%;
+  }
+
+  img{
+    width: auto;
+    height: 6vh;
+    cursor: pointer;
+}
+
+.task-control { /* where edit and delete btn is at*/
+    display: flex;
+    gap:10px ;
+    padding: 20px;
+}
+
+#task-name{
+    font-size: 1.4rem;
+}
+
+.task-description,
+.task-date {
+    font-size: 1.1rem;
+    padding: 5px;
+}

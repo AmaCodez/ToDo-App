@@ -90,8 +90,7 @@ export function renderTaskList(taskArray) {
             deleteBtn.src = deleteImg;
             deleteBtn.alt = 'delete icon';
 
-            taskName.appendChild(taskNameInput);
-
+            taskItems.appendChild(taskNameInput);
             taskItems.appendChild(taskName);
             taskItems.appendChild(taskDescription);
             taskItems.appendChild(taskDate);

@@ -89,7 +89,7 @@ export function addTask (name, date, priority, note, project = null) {
         }
     }
 
-    // filterAndRenderMyTasks();
+    filterAndRenderMyTasks();
     console.log('Current projects:', taskStore.projects);
 }
 
