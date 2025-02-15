@@ -30,7 +30,6 @@ function filterAndRenderMyTasks() {
     console.log('Filtered tasks for rendering:', myTasks);
     renderTaskList(myTasks);
 
-    // Reset flag after rendering
     renderInProgress = false;
 }
 
@@ -47,7 +46,6 @@ export function addTask (name, date, priority, note, project = null) {
     if (taskStore.isEditing) {
         if (taskStore.editIndex !== null && taskStore.editIndex >= 0) {
             if (project) {
-                // Find the project and update the task inside it
                 const targetProject = taskStore.projects.find(p => p.name === project);
                 if (targetProject && taskStore.editIndex < targetProject.tasks.length) {
                     targetProject.tasks[taskStore.editIndex] = { name, date, priority, note, project };
@@ -56,15 +54,11 @@ export function addTask (name, date, priority, note, project = null) {
                     console.error(` ❌ Project "${project}" not found or invalid index!`);
                 }
             } else {
-                // Update general tasks (not in a project)
                 taskStore.tasks[taskStore.editIndex] = { name, date, priority, note, project };
                 console.log(" ✅ Task successfully updated at index:", taskStore.editIndex, taskStore.tasks[taskStore.editIndex]);
             }
-        } //else {
-            //console.error(" ❌ Invalid editIndex, task not updated");
-       // }
+        } 
     } else {
-        // Creating a new task
         const newTask = { name, date, priority, note, project, completed: false };
 
         console.log(`📌 addTask() called with project: "${project}"`);
@@ -111,11 +105,8 @@ const allTask = (projectName = null) => {
     console.log('Filtered tasks for rendering:', filteredTasks);
     renderTaskList(filteredTasks);
 
-    // Set up the event listeners for task form handling
     setupEventListeners(projectName);
 
-    // let isEditing = false; 
-    // let editIndex = null;
 
     class TaskList {
         constructor (name, date, priority, note, completed = false) {
@@ -186,7 +177,6 @@ function setupEventListeners (projectName = null) {
 
     setupEventListeners ();
 
-// Function to open the edit dialog with the selected task's data
 window.editTask = (task, index) => {
     taskStore.isEditing = true;
     taskStore.editIndex = index;

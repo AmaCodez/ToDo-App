@@ -14,8 +14,6 @@ const today = () => {
         main.appendChild(taskContainer);
     }
 
-    // const currentDate = new Date().toISOString().split('T')[0];
-    // const todayTasks = taskStore.tasks.filter(task => task.date === currentDate);
     const todayTasks = taskStore.tasks.filter(task => isTodayOrUpcoming(task) === 'today');
     console.log('Filtered tasks for Today tab:', todayTasks);
     renderTaskList(todayTasks);

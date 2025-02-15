@@ -6,20 +6,7 @@
 
 body {
     min-height: 100vh;
-    /* display: flex;
-    flex-direction: column; */
-    /* display: grid;
-    grid-template-columns: auto 1fr; 
-    transition: grid-template-columns 0.3s ease-in-out; */
 }
-
-
-/* .completed-tab {
-    background-color: blue;
-}
-.mytask {
-    background-color: rgb(196, 255, 230);
-} */
 
 /* Task Form */
 form {
@@ -141,7 +128,7 @@ dialog {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    border-radius: 8px; /* round corners */
+    border-radius: 8px; 
     margin-bottom: 20px;
     width: 80%;
     background-color: white;
@@ -234,18 +221,6 @@ dialog {
     margin-bottom: 12px;
     font-size: 1.2rem;
 }
-/* COLLAPSIBLE SIDEBAR */
-/* .sidebar.open {
-    transform: translateX(0); 
-} */
-/* .sidebar.closed {
-    width: 0;
-    overflow: hidden;
-} */
-
-/* .sidebar.closed + .content {
-    margin-left: 0;
-} */
 
 /* SIDEBAR BUTTONS */
 .sidebar button {
@@ -271,8 +246,6 @@ main {
   grid-row: 2;
   grid-column: 2;
   overflow-y: auto;
-  /* Ensures it stretches at least the full viewport minus header */
-  /* min-height: calc(100vh - 60px); */
 }
 
 #task-container {
