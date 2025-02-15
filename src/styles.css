@@ -1,26 +1,28 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
+    /* display: grid;
+    grid-template-columns: auto 1fr; 
+    transition: grid-template-columns 0.3s ease-in-out; */
 }
 
 
-.completed-tab {
+/* .completed-tab {
     background-color: blue;
 }
 .mytask {
     background-color: rgb(196, 255, 230);
-    /* display: flex;
-    flex-direction: column;
-    gap: 10vh; */
-}
+} */
 
 /* Task Form */
-.form {
+form {
     background-color: #F6F7F8;
     border: 1px solid #D6D9DC;
     border-radius: 3px;  
@@ -31,7 +33,8 @@ body {
     flex-direction: column;
 }
 
-.form-content {
+.form-content,
+#projectName {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -75,12 +78,15 @@ body {
     resize: none;
   }
 
-  .form-buttons{
+  .form-buttons,
+  .dialog-buttons{
     margin-top: 10px;
   }
 
   .newTask,
-  .cancel {
+  .cancel,
+  .addProjectBtn,
+  .cancelProjectBtn {
     font-size: 16px;
     font-weight: bold;
   
@@ -95,31 +101,56 @@ body {
   }
   
   .newTask:hover,
-  .cancel:hover {
+  .cancel:hover,
+  .addProjectBtn:hover,
+  .cancelProjectBtn:hover {
     background-color: #76AEED;
   }
   
   .newTask:active,
-  .cancel:active {
+  .cancel:active,
+  .addProjectBtn:active,
+  .cancelProjectBtn:active {
     background-color: #407FC7;
   }
-
+/* Dialog */
+dialog {
+    width: 400px;    
+    max-width: 90%;
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Center the dialog when open */
+  dialog[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* dim the background */
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
   /* Task list */
   .task-list { /* the whole task list*/
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     padding: 20px;
-    border: 2px solid blue;
-    margin-top: 20px;
-    /* width: 50%; */
+    border-radius: 8px; /* round corners */
+    margin-bottom: 20px;
+    width: 80%;
+    background-color: white;
   }
 
   .task-items{ /* name & description is in here*/
     margin-right: auto;
-    /* border: 1px solid black; */
     padding: 20px;
-    width: 70%;
+    width: 40%;
   }
 
   img{
@@ -128,10 +159,16 @@ body {
     cursor: pointer;
 }
 
+.editBtn,
+.deleteBtn {
+    background: none;
+}
+
 .task-control { /* where edit and delete btn is at*/
     display: flex;
     gap:10px ;
     padding: 20px;
+    border: 1px solid black;
 }
 
 #task-name{
@@ -143,3 +180,103 @@ body {
     font-size: 1.1rem;
     padding: 5px;
 }
+
+/* GRID LAYOUT */
+.container {
+    display: grid;
+    grid-template-columns: 250px 1fr; /* Sidebar (250px) | Main content */
+    grid-template-rows: 100px 1fr;  /* Header (60px) | Main content */
+    height: 100vh;
+    transition: grid-template-columns 0.3s ease-in-out;
+}
+
+.container.closed {
+    grid-template-columns: 0 1fr; /* 0px for sidebar, full width for main */
+  }
+
+/* HEADER */
+.header {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 2vw;
+}
+
+/* HAMBURGER MENU */
+.hamburger {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    grid-row: 2;
+    grid-column: 1;
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.projects-title{
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+/* COLLAPSIBLE SIDEBAR */
+/* .sidebar.open {
+    transform: translateX(0); 
+} */
+/* .sidebar.closed {
+    width: 0;
+    overflow: hidden;
+} */
+
+/* .sidebar.closed + .content {
+    margin-left: 0;
+} */
+
+/* SIDEBAR BUTTONS */
+.sidebar button {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    /* width: 80%; */
+}
+
+.sidebar button:hover {
+    background-color: #666;
+}
+
+/* MAIN CONTENT */
+main {
+    background-color: plum; 
+  padding: 20px;
+  grid-row: 2;
+  grid-column: 2;
+  overflow-y: auto;
+  /* Ensures it stretches at least the full viewport minus header */
+  /* min-height: calc(100vh - 60px); */
+}
+
+#task-container {
+    padding: 20px;
+}
+
+

@@ -65,89 +65,182 @@ export function createProject(projectName) {
     console.log(`Project created: ${projectName}`);
 }
 
+// document.addEventListener("DOMContentLoaded", () => {
+//     renderProjects(); // Render existing projects on page load
+
+//     // Attach event listener to project container to handle dynamic projects
+//     document.querySelector('.project-content').addEventListener('click', (event) => {
+//         if (event.target.classList.contains('project-item')) {
+//             const projectName = event.target.textContent.trim();
+//             loadProjectTasks(projectName); // Load only this project's tasks
+//         }
+//     });
+// });
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     let activeTab = "myTasks";
+//     // Load default tab
+//     allTask();
+
+//     const allTaskTab = document.querySelector("#myTasks");
+//     const todayTaskTab = document.querySelector("#todayTask");
+//     const completedTaskTab = document.querySelector("#completedTask");
+//     const upcomingTaskTab = document.querySelector("#upcomingTask");
+
+//     const addTaskButton = document.querySelector('.addTaskBtn');
+//     const dialog = document.querySelector('#taskDialog');
+
+//     if (addTaskButton && dialog) {
+//         addTaskButton.addEventListener('click', () => {
+//             const form = dialog.querySelector('form');
+//             if (form) {
+//               form.reset();
+//             }
+            
+//             // Remove any project-specific data.
+//             delete dialog.dataset.project;
+            
+//             // Ensure the dialog is in "add" mode (not editing).
+//             taskStore.isEditing = false;
+//             taskStore.editIndex = null;
+            
+//             // If you are using the same form button (.newTask) in both contexts,
+//             // update its text to "Add" for the global case.
+//             const newTaskBtn = document.querySelector('.newTask');
+//             if (newTaskBtn) {
+//               newTaskBtn.textContent = 'Add';
+//             }
+
+//             dialog.showModal();
+//                 });
+//     } else {
+//              console.error("Add Task button or dialog not found.");
+//          }
+
+//     // Event listeners for tab switching
+//     if (allTaskTab && todayTaskTab && completedTaskTab) {
+//         allTaskTab.addEventListener("click", () => {
+//             activeTab = "myTasks"; 
+//             removeAllContent();
+//             allTask();
+//             console.log('alltask button clicked');
+//         });
+
+//         todayTaskTab.addEventListener("click", () => {
+//             activeTab = "todayTasks";
+//             removeAllContent();
+//             today();
+//             console.log('today button clicked');
+//         });
+
+//         upcomingTaskTab.addEventListener("click", () => {
+//             activeTab = "upcomingTasks";
+//             removeAllContent();
+//             upcoming();
+//             console.log('upcoming button clicked');
+//         });
+
+//         completedTaskTab.addEventListener("click", () => {
+//             activeTab = "completedTasks";
+//             removeAllContent();
+//             completed();
+//             console.log('completed button clicked');
+//         });
+//     } else {
+//         console.error("One or more tab buttons not found!");
+//     }
+
+// });
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Menu toggle code
+    // const menuToggle = document.getElementById("menuToggle");
+    // if (menuToggle) {
+    //   menuToggle.addEventListener("click", () => {
+    //     document.querySelector(".container").classList.toggle("closed");
+    //   });
+    // } else {
+    //   console.error("Menu toggle button (#menuToggle) not found!");
+    // }
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+        document.querySelector(".container").classList.toggle("closed");
+      });
+  
+    // Project rendering and project-item click listener
     renderProjects(); // Render existing projects on page load
-
-    // Attach event listener to project container to handle dynamic projects
+  
     document.querySelector('.project-content').addEventListener('click', (event) => {
-        if (event.target.classList.contains('project-item')) {
-            const projectName = event.target.textContent.trim();
-            loadProjectTasks(projectName); // Load only this project's tasks
-        }
+      if (event.target.classList.contains('project-item')) {
+        const projectName = event.target.textContent.trim();
+        loadProjectTasks(projectName); // Load only this project's tasks
+      }
     });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
+  
+    // Tab switching and add task dialog code
     let activeTab = "myTasks";
-    // Load default tab
     allTask();
-
+  
     const allTaskTab = document.querySelector("#myTasks");
     const todayTaskTab = document.querySelector("#todayTask");
     const completedTaskTab = document.querySelector("#completedTask");
     const upcomingTaskTab = document.querySelector("#upcomingTask");
-
+  
     const addTaskButton = document.querySelector('.addTaskBtn');
     const dialog = document.querySelector('#taskDialog');
-
+  
     if (addTaskButton && dialog) {
-        addTaskButton.addEventListener('click', () => {
-            const form = dialog.querySelector('form');
-            if (form) {
-              form.reset();
-            }
-            
-            // Remove any project-specific data.
-            delete dialog.dataset.project;
-            
-            // Ensure the dialog is in "add" mode (not editing).
-            taskStore.isEditing = false;
-            taskStore.editIndex = null;
-            
-            // If you are using the same form button (.newTask) in both contexts,
-            // update its text to "Add" for the global case.
-            const newTaskBtn = document.querySelector('.newTask');
-            if (newTaskBtn) {
-              newTaskBtn.textContent = 'Add';
-            }
-
-            dialog.showModal();
-                });
+      addTaskButton.addEventListener('click', () => {
+        const form = dialog.querySelector('form');
+        if (form) {
+          form.reset();
+        }
+        
+        delete dialog.dataset.project;
+        taskStore.isEditing = false;
+        taskStore.editIndex = null;
+        
+        const newTaskBtn = document.querySelector('.newTask');
+        if (newTaskBtn) {
+          newTaskBtn.textContent = 'Add';
+        }
+  
+        dialog.showModal();
+      });
     } else {
-             console.error("Add Task button or dialog not found.");
-         }
-
-    // Event listeners for tab switching
-    if (allTaskTab && todayTaskTab && completedTaskTab) {
-        allTaskTab.addEventListener("click", () => {
-            activeTab = "myTasks"; 
-            removeAllContent();
-            allTask();
-            console.log('alltask button clicked');
-        });
-
-        todayTaskTab.addEventListener("click", () => {
-            activeTab = "todayTasks";
-            removeAllContent();
-            today();
-            console.log('today button clicked');
-        });
-
-        upcomingTaskTab.addEventListener("click", () => {
-            activeTab = "upcomingTasks";
-            removeAllContent();
-            upcoming();
-            console.log('upcoming button clicked');
-        });
-
-        completedTaskTab.addEventListener("click", () => {
-            activeTab = "completedTasks";
-            removeAllContent();
-            completed();
-            console.log('completed button clicked');
-        });
-    } else {
-        console.error("One or more tab buttons not found!");
+      console.error("Add Task button or dialog not found.");
     }
-
-});
+  
+    if (allTaskTab && todayTaskTab && completedTaskTab) {
+      allTaskTab.addEventListener("click", () => {
+        activeTab = "myTasks"; 
+        removeAllContent();
+        allTask();
+        console.log('alltask button clicked');
+      });
+  
+      todayTaskTab.addEventListener("click", () => {
+        activeTab = "todayTasks";
+        removeAllContent();
+        today();
+        console.log('today button clicked');
+      });
+  
+      upcomingTaskTab.addEventListener("click", () => {
+        activeTab = "upcomingTasks";
+        removeAllContent();
+        upcoming();
+        console.log('upcoming button clicked');
+      });
+  
+      completedTaskTab.addEventListener("click", () => {
+        activeTab = "completedTasks";
+        removeAllContent();
+        completed();
+        console.log('completed button clicked');
+      });
+    } else {
+      console.error("One or more tab buttons not found!");
+    }
+  });
+  
